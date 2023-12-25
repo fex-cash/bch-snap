@@ -1,0 +1,39 @@
+{
+  "version": "0.0.14",
+  "description": "A MetaMask Snap for Bitcoin Cash",
+  "proposedName": "Bitcoin Cash Snap",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fex-cash/bch-snap.git"
+  },
+  "source": {
+    "shasum": "RGGzRQekSb9h2z6oRgC6vElmvOpvnBQkRsO/sxIGhbM=",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "iconPath": "images/icon.svg",
+        "packageName": "bch-snap",
+        "registry": "https://registry.npmjs.org/"
+      }
+    }
+  },
+  "initialPermissions": {
+    "snap_dialog": {},
+    "endowment:rpc": {
+      "dapps": true,
+      "snaps": false
+    },
+    "endowment:webassembly": {},
+    "snap_getEntropy": {},
+    "snap_manageState": {},
+    "snap_getBip44Entropy": [
+      {
+        "coinType": 1
+      },
+      {
+        "coinType": 145
+      }
+    ]
+  },
+  "manifestVersion": "0.1"
+}
