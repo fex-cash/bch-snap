@@ -1,6 +1,6 @@
 # Bitcoin Cash Snap
 
-A MetaMask Snap for Bitcoin Cash
+A MetaMask Snap for Bitcoin Cash. The wallet website is [bchwallet](https://bchwallet.cash).
 
 ## Install
 ```sh
@@ -12,7 +12,7 @@ yarn add bch-snap
 ```
 
 ## RPC Methods
-`bch_getAddress`
+`bch_getAddress`: Get current BCH cash address.
 
 parameters:
 ```ts
@@ -21,7 +21,8 @@ parameters:
 }
 ```
 
-`bch_showWIF`
+`bch_switchAddress`: Switch bch address (based on BIP32) and cache index to browser (based on snap manage state).
+The current address used by each DApp are stored independently of each other.
 
 parameters:
 ```ts
@@ -30,7 +31,8 @@ parameters:
 }
 ```
 
-`bch_getPublicKey`
+`bch_showWIF`: Show wif private key in snap window.
+This method **DOES NOT** read the user's private key, it is for display only.
 
 parameters:
 ```ts
@@ -39,7 +41,7 @@ parameters:
 }
 ```
 
-`bch_switchAddress`
+`bch_getPublicKey`: Get current BCH public key.
 
 parameters:
 ```ts
@@ -48,7 +50,7 @@ parameters:
 }
 ```
 
-`bch_signTransaction`
+`bch_signTransaction`: Sign for BCH unsigned transactions.
 
 parameters:
 ```ts
@@ -58,15 +60,6 @@ parameters:
 }
 ```
 
-`bch_signTransactionForArg`
-
-parameters:
-```ts
-{
-  network: 'mainnet' | 'testnet';
-  unsignedTx: string;
-}
-```
 the original `unsignedTx` is an object like this:
 ```ts
 import {type TransactionCommon} from '@bitauth/libauth';
@@ -77,8 +70,6 @@ export type UnsignedTx = {
   sourceOutputs: SourceOutput[],
 }
 ```
-
-
 
 where `unsignedTx` parameter is a string using `pack()`, you can refer to the following code:
 ```ts
