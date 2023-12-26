@@ -1,7 +1,7 @@
+import { copyable, divider, heading, panel, text } from '@metamask/snaps-ui';
 import { bip44NodeToCashaddr, bip44NodeToWif, getAccount } from './rpc/account';
 import { CashAddressNetworkPrefix, CashAddressType, TransactionCommon } from "./lib/libauth";
-import { copyable, divider, heading, panel, text } from '@metamask/snaps-ui';
-import { unPack } from "./utils/serilize";
+import { unPack } from "./utils/serialize";
 import { SignTransactionParams } from "./rpc-types";
 import { extractOutputs, makeSignedTx, signTransactionForArg as signTransactionForArg_ } from "./rpc/transaction";
 import { formatUnits } from "./utils/unit";
@@ -57,10 +57,6 @@ export async function showWIF(origin: string, { network }: { network: keyof type
 
 
 function getPancelContents(netowrkPreifx: CashAddressNetworkPrefix, address: string, unsignedTx: { transaction: TransactionCommon, sourceOutputs: any }) {
-  console.log('unsignedTxCmn: ', unsignedTx.transaction);
-  console.log('inputs: ', unsignedTx.transaction.inputs);
-  console.log('sourceOutputs: ', unsignedTx.sourceOutputs);
-
   function toHex(data: Uint8Array | string) {
     if (typeof data === "object") {
       return Buffer.from(data).toString("hex")
@@ -110,7 +106,6 @@ function getPancelContents(netowrkPreifx: CashAddressNetworkPrefix, address: str
   }
 
   const outputs = extractOutputs(unsignedTx.transaction, netowrkPreifx);
-  console.log("outputs", outputs)
   for (const [index, output] of outputs.entries()) {
     if (output.cashAddress !== address) {
       pancelContents.push(
@@ -177,7 +172,6 @@ export async function signTransaction(origin: string, { unsignedTx, network }: S
   }
 
   const [signedTx, signedTxHex] = makeSignedTx(unsignedTxCmn, unsignedTxObj.sourceOutputs, account.privateKeyBytes!);
-  console.log('signedTxHex: ', signedTxHex);
   return signedTxHex;
 }
 
@@ -218,7 +212,6 @@ export async function signTransactionForArg(origin: string, { unsignedTx, networ
 
   const signedTx = await signTransactionForArg_(transaction, sourceOutputs, inputIndex, bytecode, account.privateKeyBytes!);
   const signedTxHex = Buffer.from(signedTx).toString('hex');
-  console.log('signedTxHex: ', signedTxHex);
   return signedTxHex;
 }
 
@@ -245,7 +238,6 @@ export async function switchAddress(origin: string, { network }: { network: keyo
       placeholder: ' ',
     },
   })
-  console.log("input: ", input)
   if (!input) {
     return false
   }

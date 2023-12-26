@@ -12,7 +12,6 @@ export function makeSignedTx(unsignedTxCmn: TransactionCommon,
   privateKey: Uint8Array): [Uint8Array, string] {
   const signedTx = signUnsignedTransaction(unsignedTxCmn, sourceOutputs, privateKey);
   const signedTxHex = Buffer.from(signedTx).toString('hex');
-  console.log('signedTx:', signedTxHex);
   return [signedTx, signedTxHex];
 }
 

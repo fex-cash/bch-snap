@@ -73,15 +73,12 @@ export type UnsignedTx = {
 
 where `unsignedTx` parameter is a string using `pack()`, you can refer to the following code:
 ```ts
-import { decode, encode } from "algo-msgpack-with-bigint";
-
 export function pack(tx: any) {
-  return base64EncodeURL(encode(tx))
+  return JSON.stringify(tx, (_, value) => typeof value === "bigint" ? `${value.toString()}` : value)
 }
 
-export function unPack(tx: string) {
-  const result = decode(base64DecodeURL(tx))
-  return JSON.parse(JSON.stringify(result), function (key, value) {
+export function unPack(txStr: string) {
+  return JSON.parse(txStr, function (key, value) {
     if (!!value && typeof value === "object") {
       const keys = Object.keys(value)
       const values = Object.values(value)
@@ -100,17 +97,5 @@ export function unPack(tx: string) {
     }
     return value;
   })
-}
-
-function base64EncodeURL(byteArray: Uint8Array) {
-  return btoa(Array.from(new Uint8Array(byteArray)).map(val => {
-    return String.fromCharCode(val);
-  }).join('')).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '');
-}
-
-function base64DecodeURL(b64urlstring: string) {
-  return new Uint8Array(atob(b64urlstring.replace(/-/g, '+').replace(/_/g, '/')).split('').map(val => {
-    return val.charCodeAt(0);
-  }));
 }
 ```

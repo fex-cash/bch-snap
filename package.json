@@ -1,6 +1,6 @@
 {
   "name": "snap",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "A BCH wallet using metamask snaps.",
   "homepage": "https://github.com/fex-cash/bch-snap#readme",
   "bugs": {

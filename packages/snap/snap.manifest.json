@@ -1,5 +1,5 @@
 {
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "A MetaMask Snap for Bitcoin Cash",
   "proposedName": "Bitcoin Cash Snap",
   "repository": {
@@ -7,7 +7,7 @@
     "url": "https://github.com/fex-cash/bch-snap.git"
   },
   "source": {
-    "shasum": "RGGzRQekSb9h2z6oRgC6vElmvOpvnBQkRsO/sxIGhbM=",
+    "shasum": "PujvwicgUnSDRrDqSZu1iAePDuZsANoIPjCxt/kSmEc=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",

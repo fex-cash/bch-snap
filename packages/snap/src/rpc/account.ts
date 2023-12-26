@@ -1,7 +1,7 @@
 import {BIP44Node, getBIP44AddressKeyDeriver} from '@metamask/key-tree';
+import wif from 'wif';
 import {CashAddressNetworkPrefix, CashAddressType, encodeCashAddress, hash160} from '../lib/libauth';
 
-import wif from 'wif';
 
 export async function getAccount(network: CashAddressNetworkPrefix, index:number): Promise<BIP44Node> {
   // https://github.com/satoshilabs/slips/blob/master/slip-0044.md
