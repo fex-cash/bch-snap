@@ -21,7 +21,7 @@ parameters:
 }
 ```
 
-`bch_getPrivateKeyWif`
+`bch_showWIF`
 
 parameters:
 ```ts
@@ -31,6 +31,15 @@ parameters:
 ```
 
 `bch_getPublicKey`
+
+parameters:
+```ts
+{
+  network: 'mainnet' | 'testnet'
+}
+```
+
+`bch_switchAddress`
 
 parameters:
 ```ts
@@ -68,6 +77,8 @@ export type UnsignedTx = {
   sourceOutputs: SourceOutput[],
 }
 ```
+
+
 
 where `unsignedTx` parameter is a string using `pack()`, you can refer to the following code:
 ```ts
