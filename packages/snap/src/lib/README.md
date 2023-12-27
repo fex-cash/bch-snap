@@ -7,7 +7,7 @@
 
 ### Issues
 - The path to import in `libauth` code has a `.js` suffix, which causes the import to be incorrect when packaging on the snap side.
-- The snap builds package failed because of top level await.
+- Modify default-crypto-instances.ts to remove top-level await.
 
 ### How to solve
 - Download `libauth` source code
