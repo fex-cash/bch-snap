@@ -2,14 +2,6 @@
 
 A MetaMask Snap for Bitcoin Cash. The wallet website is [bchwallet](https://bchwallet.cash).
 
-## Install
-```sh
-npm install bch-snap
-```
-or
-```sh
-yarn add bch-snap
-```
 
 ## RPC Methods
 `bch_getAddress`: Get current BCH cash address.
@@ -32,7 +24,7 @@ parameters:
 ```
 
 `bch_showWIF`: Show wif private key in snap window.
-This method **DOES NOT** read the user's private key, it is for display only.
+This method DOES NOT return the user's private key to the DApp. It is for MetaMask’s display only.
 
 parameters:
 ```ts
@@ -41,7 +33,7 @@ parameters:
 }
 ```
 
-`bch_getPublicKey`: Get current BCH public key.
+`bch_getPublicKey`: Get current BCH cash address’s public key.
 
 parameters:
 ```ts
