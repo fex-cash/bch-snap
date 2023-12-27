@@ -63,7 +63,7 @@ parameters:
 `bch_signTransactionForArg`:Sign for BCH unsigned transactions.
 This method is intended to solve the problem of passing `SignatureTemplate` parameter.
 
-you can find `SignatureTemplate` here: https://github.com/CashScript/cashscript/blob/v0.8.2/packages/cashscript/src/SignatureTemplate.ts#L4
+`SignatureTemplate` can be found here: https://github.com/CashScript/cashscript/blob/v0.8.2/packages/cashscript/src/SignatureTemplate.ts#L4
 
 parameters:
 ```ts
@@ -75,9 +75,9 @@ parameters:
 
 the original `unsignedTx` is an object like this:
 
-you can find `TransactionCommon` here: https://github.com/bitauth/libauth/blob/master/src/lib/message/transaction-types.ts#L245
+`TransactionCommon` can be found here: https://github.com/bitauth/libauth/blob/master/src/lib/message/transaction-types.ts#L245
 
-and you can find `SourceOutput` here: https://github.com/mainnet-cash/mainnet-js/blob/1.1.28/packages/mainnet-js/src/wallet/model.ts#L317
+`SourceOutput` can be found here: https://github.com/mainnet-cash/mainnet-js/blob/1.1.28/packages/mainnet-js/src/wallet/model.ts#L317
 ```ts
 import {type TransactionCommon} from '@bitauth/libauth';
 import {type SourceOutput} from "mainnet-js";
