@@ -7,7 +7,7 @@
     "url": "https://github.com/fex-cash/bch-snap.git"
   },
   "source": {
-    "shasum": "YfEFw3aNUcbK3FaYh4J1tLpu5qVec13Pgh5xNaPNLYE=",
+    "shasum": "jaH7+3MpkJcqaiZXj3NYHt3nGdzzpVr5f9RaOGhs5pE=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",

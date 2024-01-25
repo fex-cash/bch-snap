@@ -8,21 +8,21 @@ import { formatUnits } from "./utils/unit";
 import { getAddressIndex, updateAddressIndex } from './rpc/address-index';
 
 export async function getAddress(origin: string, { network }: { network: keyof typeof CashAddressNetworkPrefix }): Promise<string> {
-  const netowrkPreifx: CashAddressNetworkPrefix = CashAddressNetworkPrefix[network]
-  const account = await getAccount(netowrkPreifx, await getAddressIndex(origin, network));
-  return await bip44NodeToCashaddr(account, netowrkPreifx, CashAddressType.p2pkh);
+  const networkPrefix: CashAddressNetworkPrefix = CashAddressNetworkPrefix[network]
+  const account = await getAccount(networkPrefix, await getAddressIndex(origin, network));
+  return await bip44NodeToCashaddr(account, networkPrefix, CashAddressType.p2pkh);
 }
 
 export async function getPublicKey(origin: string, { network }: { network: keyof typeof CashAddressNetworkPrefix }): Promise<string> {
-  const netowrkPreifx: CashAddressNetworkPrefix = CashAddressNetworkPrefix[network]
-  const account = await getAccount(netowrkPreifx, await getAddressIndex(origin, network));
+  const networkPrefix: CashAddressNetworkPrefix = CashAddressNetworkPrefix[network]
+  const account = await getAccount(networkPrefix, await getAddressIndex(origin, network));
   return account.publicKey;
 }
 
 export async function showWIF(origin: string, { network }: { network: keyof typeof CashAddressNetworkPrefix }) {
-  const netowrkPreifx: CashAddressNetworkPrefix = CashAddressNetworkPrefix[network]
-  const account = await getAccount(netowrkPreifx, await getAddressIndex(origin, network));
-  const wif = await bip44NodeToWif(account, netowrkPreifx);
+  const networkPrefix: CashAddressNetworkPrefix = CashAddressNetworkPrefix[network]
+  const account = await getAccount(networkPrefix, await getAddressIndex(origin, network));
+  const wif = await bip44NodeToWif(account, networkPrefix);
 
   const confirmationResponse = await snap.request({
     method: 'snap_dialog',
@@ -56,7 +56,7 @@ export async function showWIF(origin: string, { network }: { network: keyof type
 }
 
 
-function getPancelContents(netowrkPreifx: CashAddressNetworkPrefix, address: string, unsignedTx: { transaction: TransactionCommon, sourceOutputs: any }) {
+function getPanelContents(networkPrefix: CashAddressNetworkPrefix, address: string, unsignedTx: { transaction: TransactionCommon, sourceOutputs: any }) {
   function toHex(data: Uint8Array | string) {
     if (typeof data === "object") {
       return Buffer.from(data).toString("hex")
@@ -64,7 +64,7 @@ function getPancelContents(netowrkPreifx: CashAddressNetworkPrefix, address: str
     return data
   }
 
-  const pancelContents = [
+  const panelContents = [
     divider(),
     text(`**Current Account:**`),
     copyable(address),
@@ -76,28 +76,28 @@ function getPancelContents(netowrkPreifx: CashAddressNetworkPrefix, address: str
   for (const [index, input] of unsignedTx.transaction.inputs.entries()) {
     const src = unsignedTx.sourceOutputs[index];
     if (input.unlockingBytecode.byteLength > 0) {
-      pancelContents.push(
+      panelContents.push(
         text(`**Input#${index}**`)
       );
     } else {
-      pancelContents.push(
+      panelContents.push(
         text(`**Input#${index} (My UTXO)**`)
       );
     }
     inputBchVal = inputBchVal + BigInt(src.valueSatoshis);
     const currentBch = Number(formatUnits(src.valueSatoshis, 8));
-    pancelContents.push(
+    panelContents.push(
       text(`Value: ${currentBch} BCH`)
     );
 
     if (src.token) {
-      pancelContents.push(
+      panelContents.push(
         text(`With Token`),
         text(`Category: ${toHex(src.token!.category)}`),
         text(`Amount: ${src.token!.amount}`)
       );
       if (src.token!.nft) {
-        pancelContents.push(
+        panelContents.push(
           text(`Capability: ${src.token!.nft!.capability}`),
           text(`Commitment: ${toHex(src.token!.nft!.commitment)}`)
         );
@@ -105,32 +105,32 @@ function getPancelContents(netowrkPreifx: CashAddressNetworkPrefix, address: str
     }
   }
 
-  const outputs = extractOutputs(unsignedTx.transaction, netowrkPreifx);
+  const outputs = extractOutputs(unsignedTx.transaction, networkPrefix);
   for (const [index, output] of outputs.entries()) {
     if (output.cashAddress !== address) {
-      pancelContents.push(
+      panelContents.push(
         text(`**Output#${index}**`),
         text(`To Address: ${output.cashAddress}`)
       );
     } else {
-      pancelContents.push(
+      panelContents.push(
         text(`**Output#${index} (My UTXO)**`)
       );
     }
     outputBchVal += output.valueSatoshis;
     const currentBch = Number(formatUnits(Number(output.valueSatoshis), 8));
-    pancelContents.push(
+    panelContents.push(
       text(`Value: ${currentBch} BCH`)
     );
 
     if (output.token) {
-      pancelContents.push(
+      panelContents.push(
         text(`With Token`),
         text(`Category: ${toHex(output.token!.category)}`),
         text(`Amount: ${output.token!.amount}`)
       );
       if (output.token!.nft) {
-        pancelContents.push(
+        panelContents.push(
           text(`Capability: ${output.token!.nft!.capability}`),
           text(`Commitment: ${toHex(output.token!.nft!.commitment)}`)
         );
@@ -138,11 +138,11 @@ function getPancelContents(netowrkPreifx: CashAddressNetworkPrefix, address: str
     }
   }
 
-  pancelContents.push(
+  panelContents.push(
     divider(),
     text(`**Miner Fee**: ${Number(inputBchVal - outputBchVal)} sats\n`)
   );
-  return pancelContents
+  return panelContents
 }
 
 
@@ -150,20 +150,20 @@ export async function signTransaction(origin: string, { unsignedTx, network }: S
   const unsignedTxObj = unPack(unsignedTx);
   const unsignedTxCmn = unsignedTxObj.transaction as TransactionCommon
 
-  const netowrkPreifx: CashAddressNetworkPrefix = CashAddressNetworkPrefix[network]
-  const account = await getAccount(netowrkPreifx, await getAddressIndex(origin, network));
-  const address = await bip44NodeToCashaddr(account, netowrkPreifx, CashAddressType.p2pkh);
+  const networkPrefix: CashAddressNetworkPrefix = CashAddressNetworkPrefix[network]
+  const account = await getAccount(networkPrefix, await getAddressIndex(origin, network));
+  const address = await bip44NodeToCashaddr(account, networkPrefix, CashAddressType.p2pkh);
 
-  let pancelContents: any = [
+  let panelContents: any = [
     heading('Confirm Transaction'),
   ];
-  pancelContents = pancelContents.concat(getPancelContents(netowrkPreifx, address, unsignedTxObj))
+  panelContents = panelContents.concat(getPanelContents(networkPrefix, address, unsignedTxObj))
 
   const confirmationResponse = await snap.request({
     method: 'snap_dialog',
     params: {
       type: 'confirmation',
-      content: panel(pancelContents),
+      content: panel(panelContents),
     },
   });
 
@@ -176,25 +176,25 @@ export async function signTransaction(origin: string, { unsignedTx, network }: S
 }
 
 export async function signTransactionForArg(origin: string, { unsignedTx, network }: SignTransactionParams): Promise<string> {
-  const netowrkPreifx: CashAddressNetworkPrefix = CashAddressNetworkPrefix[network]
-  const account = await getAccount(netowrkPreifx, await getAddressIndex(origin, network));
-  const address = await bip44NodeToCashaddr(account, netowrkPreifx, CashAddressType.p2pkh);
+  const networkPrefix: CashAddressNetworkPrefix = CashAddressNetworkPrefix[network]
+  const account = await getAccount(networkPrefix, await getAddressIndex(origin, network));
+  const address = await bip44NodeToCashaddr(account, networkPrefix, CashAddressType.p2pkh);
 
   const unsignedTxObj = unPack(unsignedTx);
 
-  let pancelContents: any = [
+  let panelContents: any = [
     heading('Sign Transaction'),
   ];
-  pancelContents = pancelContents.concat(getPancelContents(netowrkPreifx, address, unsignedTxObj))
+  panelContents = panelContents.concat(getPanelContents(networkPrefix, address, unsignedTxObj))
 
   const { transaction, sourceOutputs, inputIndex, bytecode } = unsignedTxObj;
 
-  pancelContents.push(
+  panelContents.push(
     divider(),
     text(`**InputIndex**: ${inputIndex} \n`)
   )
 
-  pancelContents.push(
+  panelContents.push(
     text(`**Bytecode**: ${Buffer.from(bytecode).toString("hex")}\n`)
   )
 
@@ -202,7 +202,7 @@ export async function signTransactionForArg(origin: string, { unsignedTx, networ
     method: 'snap_dialog',
     params: {
       type: 'confirmation',
-      content: panel(pancelContents),
+      content: panel(panelContents),
     },
   });
 
@@ -218,9 +218,9 @@ export async function signTransactionForArg(origin: string, { unsignedTx, networ
 export async function switchAddress(origin: string, { network }: { network: keyof typeof CashAddressNetworkPrefix }): Promise<string | boolean | null> {
   const maxAddressesCount = 20
   const addresses = await Promise.all(new Array(maxAddressesCount).fill(0).map(async (_, i) => {
-    const netowrkPreifx: CashAddressNetworkPrefix = CashAddressNetworkPrefix[network]
-    const account = await getAccount(netowrkPreifx, i);
-    return await bip44NodeToCashaddr(account, netowrkPreifx, CashAddressType.p2pkh);
+    const networkPrefix: CashAddressNetworkPrefix = CashAddressNetworkPrefix[network]
+    const account = await getAccount(networkPrefix, i);
+    return await bip44NodeToCashaddr(account, networkPrefix, CashAddressType.p2pkh);
   }))
 
   let input = await snap.request({
