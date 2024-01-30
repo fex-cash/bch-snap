@@ -1,6 +1,6 @@
 {
   "name": "bch-snap",
-  "version": "0.0.16",
+  "version": "0.1.0",
   "description": "A MetaMask Snap for Bitcoin Cash",
   "repository": {
     "type": "git",
