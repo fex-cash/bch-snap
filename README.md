@@ -1,4 +1,4 @@
-# bch-snap [![0.0.15](https://badge.fury.io/js/bch-snap.png)](https://badge.fury.io/js/bch-snap)
+# bch-snap [![0.1.1](https://badge.fury.io/js/bch-snap.png)](https://badge.fury.io/js/bch-snap)
 
 ---
 

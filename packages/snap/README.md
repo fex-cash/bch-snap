@@ -1,4 +1,4 @@
-# Bitcoin Cash Snap
+# Bitcoin Cash Wallet
 
 A MetaMask Snap for Bitcoin Cash. The wallet website is [bchwallet](https://bchwallet.cash).
 

@@ -1,11 +1,19 @@
 {
   "name": "bch-snap",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A MetaMask Snap for Bitcoin Cash",
   "repository": {
     "type": "git",
     "url": "https://github.com/fex-cash/bch-snap.git"
   },
+  "keywords": [
+    "Bitcoin Cash",
+    "BCH",
+    "Cashtokens",
+    "CRC20",
+    "CRC721",
+    "MetaMask Snap"
+  ],
   "homepage": "https://github.com/fex-cash/bch-snap#readme",
   "bugs": {
     "url": "https://github.com/fex-cash/bch-snap/issues"
